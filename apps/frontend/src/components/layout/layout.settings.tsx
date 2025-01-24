@@ -85,7 +85,7 @@ export const LayoutSettings = ({ children }: { children: ReactNode }) => {
           <ContinueProvider />
           <div className="min-h-[100vh] w-full max-w-[1440px] mx-auto bg-primary px-6 text-textColor flex flex-col">
             {user?.admin && <Impersonate />}
-            <nav className="flex items-center justify-between">
+            <nav className="flex items-center justify-between mt-4">
               <Link
                 href="/"
                 className="text-2xl flex items-center gap-[10px] text-textColor order-1"
@@ -93,12 +93,12 @@ export const LayoutSettings = ({ children }: { children: ReactNode }) => {
                 <div className="min-w-[55px]">
                   <Image
                     src={isGeneral ? '/postiz.svg' : '/logo.svg'}
-                    width={55}
-                    height={53}
+                    width={155}
+                    height={152}
                     alt="Logo"
                   />
                 </div>
-                <div
+                {/* <div
                   className={clsx(!isGeneral ? 'mt-[12px]' : 'min-w-[80px]')}
                 >
                   {isGeneral ? (
@@ -129,7 +129,7 @@ export const LayoutSettings = ({ children }: { children: ReactNode }) => {
                   ) : (
                     'Gitroom'
                   )}
-                </div>
+                </div> */}
               </Link>
               {user?.orgId &&
               (user.tier !== 'FREE' || !isGeneral || !billingEnabled) ? (

@@ -1,0 +1,154 @@
+name: Background - Deploy Pipeline AWS EB
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+  release:
+    types:
+      - published
+      - created
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          cache: 'npm'
+          node-version: 20
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build:background
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          cache: 'npm'
+          node-version: 20
+
+      - name: Download artifact dist
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Create Procfile
+        run: |
+          echo "worker: node dist/apps/workers/main.js & node dist/apps/cron/main.js" > Procfile 
+
+      - name: Create Environment Config
+        run: |
+          mkdir -p .ebextensions
+          echo "option_settings:" > .ebextensions/env.config
+          echo "  aws:elasticbeanstalk:application:environment:" >> .ebextensions/env.config
+
+          # === Required Settings ===
+          echo "    DATABASE_URL: \"${{ secrets.DATABASE_URL }}\"" >> .ebextensions/env.config
+          echo "    REDIS_URL: \"${{ secrets.REDIS_URL }}\"" >> .ebextensions/env.config
+          echo "    JWT_SECRET: \"${{ secrets.JWT_SECRET }}\"" >> .ebextensions/env.config
+          echo "    FRONTEND_URL: \"${{ secrets.FRONTEND_URL }}\"" >> .ebextensions/env.config
+          echo "    NEXT_PUBLIC_BACKEND_URL: \"${{ secrets.NEXT_PUBLIC_BACKEND_URL }}\"" >> .ebextensions/env.config
+          echo "    BACKEND_INTERNAL_URL: \"${{ secrets.BACKEND_INTERNAL_URL }}\"" >> .ebextensions/env.config
+
+          # === Cloudflare ===
+          echo "    CLOUDFLARE_ACCOUNT_ID: \"${{ secrets.CLOUDFLARE_ACCOUNT_ID }}\"" >> .ebextensions/env.config
+          echo "    CLOUDFLARE_ACCESS_KEY: \"${{ secrets.CLOUDFLARE_ACCESS_KEY }}\"" >> .ebextensions/env.config
+          echo "    CLOUDFLARE_SECRET_ACCESS_KEY: \"${{ secrets.CLOUDFLARE_SECRET_ACCESS_KEY }}\"" >> .ebextensions/env.config
+          echo "    CLOUDFLARE_BUCKETNAME: \"${{ secrets.CLOUDFLARE_BUCKETNAME }}\"" >> .ebextensions/env.config
+          echo "    CLOUDFLARE_BUCKET_URL: \"${{ secrets.CLOUDFLARE_BUCKET_URL }}\"" >> .ebextensions/env.config
+          echo "    CLOUDFLARE_REGION: \"${{ secrets.CLOUDFLARE_REGION }}\"" >> .ebextensions/env.config
+          echo "    STORAGE_PROVIDER: \"${{ secrets.STORAGE_PROVIDER }}\"" >> .ebextensions/env.config
+
+          # === Email & Resend ===
+          echo "    RESEND_API_KEY: \"${{ secrets.RESEND_API_KEY }}\"" >> .ebextensions/env.config
+          echo "    EMAIL_FROM_ADDRESS: \"${{ secrets.EMAIL_FROM_ADDRESS }}\"" >> .ebextensions/env.config
+          echo "    EMAIL_FROM_NAME: \"${{ secrets.EMAIL_FROM_NAME }}\"" >> .ebextensions/env.config
+          echo "    EMAIL_PROVIDER: \"${{ secrets.EMAIL_PROVIDER }}\"" >> .ebextensions/env.config
+
+          # === Social Media APIs ===
+          echo "    X_API_KEY: \"${{ secrets.X_API_KEY }}\"" >> .ebextensions/env.config
+          echo "    X_API_SECRET: \"${{ secrets.X_API_SECRET }}\"" >> .ebextensions/env.config
+          echo "    X_CLIENT: \"${{ secrets.X_CLIENT }}\"" >> .ebextensions/env.config
+          echo "    LINKEDIN_CLIENT_ID: \"${{ secrets.LINKEDIN_CLIENT_ID }}\"" >> .ebextensions/env.config
+          echo "    LINKEDIN_CLIENT_SECRET: \"${{ secrets.LINKEDIN_CLIENT_SECRET }}\"" >> .ebextensions/env.config
+          echo "    REDDIT_CLIENT_ID: \"${{ secrets.REDDIT_CLIENT_ID }}\"" >> .ebextensions/env.config
+          echo "    REDDIT_CLIENT_SECRET: \"${{ secrets.REDDIT_CLIENT_SECRET }}\"" >> .ebextensions/env.config
+          echo "    GITHUB_CLIENT_ID: \"${{ secrets.GITHUB_CLIENT_ID }}\"" >> .ebextensions/env.config
+          echo "    GITHUB_CLIENT_SECRET: \"${{ secrets.GITHUB_CLIENT_SECRET }}\"" >> .ebextensions/env.config
+          echo "    FACEBOOK_APP_ID: \"${{ secrets.FACEBOOK_APP_ID }}\"" >> .ebextensions/env.config
+          echo "    FACEBOOK_APP_SECRET: \"${{ secrets.FACEBOOK_APP_SECRET }}\"" >> .ebextensions/env.config
+          echo "    THREADS_APP_ID: \"${{ secrets.THREADS_APP_ID }}\"" >> .ebextensions/env.config
+          echo "    THREADS_APP_SECRET: \"${{ secrets.THREADS_APP_SECRET }}\"" >> .ebextensions/env.config
+          echo "    YOUTUBE_CLIENT_ID: \"${{ secrets.YOUTUBE_CLIENT_ID }}\"" >> .ebextensions/env.config
+          echo "    YOUTUBE_CLIENT_SECRET: \"${{ secrets.YOUTUBE_CLIENT_SECRET }}\"" >> .ebextensions/env.config
+          echo "    TIKTOK_CLIENT_ID: \"${{ secrets.TIKTOK_CLIENT_ID }}\"" >> .ebextensions/env.config
+          echo "    TIKTOK_CLIENT_SECRET: \"${{ secrets.TIKTOK_CLIENT_SECRET }}\"" >> .ebextensions/env.config
+          echo "    PINTEREST_CLIENT_ID: \"${{ secrets.PINTEREST_CLIENT_ID }}\"" >> .ebextensions/env.config
+          echo "    PINTEREST_CLIENT_SECRET: \"${{ secrets.PINTEREST_CLIENT_SECRET }}\"" >> .ebextensions/env.config
+          echo "    DRIBBBLE_CLIENT_ID: \"${{ secrets.DRIBBBLE_CLIENT_ID }}\"" >> .ebextensions/env.config
+          echo "    DRIBBBLE_CLIENT_SECRET: \"${{ secrets.DRIBBBLE_CLIENT_SECRET }}\"" >> .ebextensions/env.config
+
+          # === Misc Settings ===
+          echo "    OPENAI_API_KEY: \"${{ secrets.OPENAI_API_KEY }}\"" >> .ebextensions/env.config
+
+          # === Payment Settings ===
+          echo "    FEE_AMOUNT: \"${{ secrets.FEE_AMOUNT }}\"" >> .ebextensions/env.config
+          echo "    STRIPE_PUBLISHABLE_KEY: \"${{ secrets.STRIPE_PUBLISHABLE_KEY }}\"" >> .ebextensions/env.config
+          echo "    STRIPE_SECRET_KEY: \"${{ secrets.STRIPE_SECRET_KEY }}\"" >> .ebextensions/env.config
+          echo "    STRIPE_SIGNING_KEY: \"${{ secrets.STRIPE_SIGNING_KEY }}\"" >> .ebextensions/env.config
+          echo "    STRIPE_SIGNING_KEY_CONNECT: \"${{ secrets.STRIPE_SIGNING_KEY_CONNECT }}\"" >> .ebextensions/env.config
+
+          # === Developer Settings ===
+          echo "    NX_ADD_PLUGINS: \"${{ secrets.NX_ADD_PLUGINS }}\"" >> .ebextensions/env.config
+          echo "    IS_GENERAL: \"${{ secrets.IS_GENERAL }}\"" >> .ebextensions/env.config
+
+          # === Upload Settings ===
+          echo "    UPLOAD_DIRECTORY: \"${{ secrets.UPLOAD_DIRECTORY }}\"" >> .ebextensions/env.config
+
+      - name: Verify Config Files
+        run: cat .ebextensions/env.config
+
+      - name: Zip application
+        run: zip -r nodejs-app-build.zip . -x "node_modules/*"
+
+      - name: Deploy to Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: 'publica'
+          environment_name: 'background-env'
+          region: us-east-1
+          version_label: "deploy-${{ github.run_id }}"
+          deployment_package: nodejs-app-build.zip
+          use_existing_version_if_available: true
+          wait_for_deployment: true
