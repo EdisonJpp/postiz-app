@@ -116,6 +116,8 @@ jobs:
           echo "    PINTEREST_CLIENT_SECRET: \"${{ secrets.PINTEREST_CLIENT_SECRET }}\"" >> .ebextensions/env.config
           echo "    DRIBBBLE_CLIENT_ID: \"${{ secrets.DRIBBBLE_CLIENT_ID }}\"" >> .ebextensions/env.config
           echo "    DRIBBBLE_CLIENT_SECRET: \"${{ secrets.DRIBBBLE_CLIENT_SECRET }}\"" >> .ebextensions/env.config
+          echo "    INSTAGRAM_APP_ID: \"${{ secrets.INSTAGRAM_APP_ID }}\"" >> .ebextensions/env.config
+          echo "    INSTAGRAM_APP_SECRET: \"${{ secrets.INSTAGRAM_APP_SECRET }}\"" >> .ebextensions/env.config
 
           # === Misc Settings ===
           echo "    OPENAI_API_KEY: \"${{ secrets.OPENAI_API_KEY }}\"" >> .ebextensions/env.config
@@ -151,4 +153,4 @@ jobs:
           version_label: "deploy-${{ github.run_id }}"
           deployment_package: nodejs-app-build.zip
           use_existing_version_if_available: true
-          wait_for_deployment: true
+          wait_for_deployment: false
