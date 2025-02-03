@@ -23,6 +23,7 @@ async function bootstrap() {
       ],
       origin: [
         'https://app.publica.do',
+        'http://localhost:4200',
         ...(process.env.MAIN_URL ? [process.env.MAIN_URL] : []),
       ],
     },
