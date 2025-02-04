@@ -22,8 +22,9 @@ async function bootstrap() {
         ...(process.env.NOT_SECURED ? ['auth', 'showorg', 'impersonate'] : []),
       ],
       origin: [
-        'https://app.publica.do',
-        'http://localhost:4200',
+        process.env.FRONTEND_URL,
+          // 'https://app.publica.do',
+          'http://localhost:4200',
         ...(process.env.MAIN_URL ? [process.env.MAIN_URL] : []),
       ],
     },

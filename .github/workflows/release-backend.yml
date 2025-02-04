@@ -117,8 +117,17 @@ jobs:
           echo "    DRIBBBLE_CLIENT_ID: \"${{ secrets.DRIBBBLE_CLIENT_ID }}\"" >> .ebextensions/env.config
           echo "    DRIBBBLE_CLIENT_SECRET: \"${{ secrets.DRIBBBLE_CLIENT_SECRET }}\"" >> .ebextensions/env.config
           echo "    INSTAGRAM_APP_ID: \"${{ secrets.INSTAGRAM_APP_ID }}\"" >> .ebextensions/env.config
-          echo "    INSTAGRAM_APP_SECRET: \"${{ secrets.INSTAGRAM_APP_SECRET }}\"" >> .ebextensions/env.config
-
+          echo "    SLACK_ID: \"${{ secrets.SLACK_ID }}\"" >> .ebextensions/env.config
+          echo "    SLACK_SECRET: \"${{ secrets.SLACK_SECRET }}\"" >> .ebextensions/env.config
+          echo "    SLACK_SIGNING_SECRET: \"${{ secrets.SLACK_SIGNING_SECRET }}\"" >> .ebextensions/env.config
+          echo "    DISCORD_CLIENT_ID: \"${{ secrets.DISCORD_CLIENT_ID }}\"" >> .ebextensions/env.config
+          echo "    DISCORD_CLIENT_SECRET: \"${{ secrets.DISCORD_CLIENT_SECRET }}\"" >> .ebextensions/env.config
+          echo "    DISCORD_BOT_TOKEN_ID: \"${{ secrets.DISCORD_BOT_TOKEN_ID }}\"" >> .ebextensions/env.config
+          echo "    TELEGRAM_BOT_NAME: \"${{ secrets.TELEGRAM_BOT_NAME }}\"" >> .ebextensions/env.config
+          echo "    TELEGRAM_TOKEN: \"${{ secrets.TELEGRAM_TOKEN }}\"" >> .ebextensions/env.config
+          echo "    MASTODON_CLIENT_ID: \"${{ secrets.MASTODON_CLIENT_ID }}\"" >> .ebextensions/env.config
+          echo "    MASTODON_CLIENT_SECRET: \"${{ secrets.MASTODON_CLIENT_SECRET }}\"" >> .ebextensions/env.config
+          
           # === Misc Settings ===
           echo "    OPENAI_API_KEY: \"${{ secrets.OPENAI_API_KEY }}\"" >> .ebextensions/env.config
 
