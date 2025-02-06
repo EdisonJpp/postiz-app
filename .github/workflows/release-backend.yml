@@ -88,6 +88,9 @@ jobs:
           echo "    CLOUDFLARE_REGION: \"${{ secrets.CLOUDFLARE_REGION }}\"" >> .ebextensions/env.config
           echo "    STORAGE_PROVIDER: \"${{ secrets.STORAGE_PROVIDER }}\"" >> .ebextensions/env.config
 
+          # === Shortener Url === 
+          echo "    SHORT_IO_SECRET_KEY: \"${{ secrets.SHORT_IO_SECRET_KEY }}\"" >> .ebextensions/env.config
+
           # === Email & Resend ===
           echo "    RESEND_API_KEY: \"${{ secrets.RESEND_API_KEY }}\"" >> .ebextensions/env.config
           echo "    EMAIL_FROM_ADDRESS: \"${{ secrets.EMAIL_FROM_ADDRESS }}\"" >> .ebextensions/env.config

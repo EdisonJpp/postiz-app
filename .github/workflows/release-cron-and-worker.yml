@@ -94,6 +94,9 @@ jobs:
           echo "    EMAIL_FROM_NAME: \"${{ secrets.EMAIL_FROM_NAME }}\"" >> .ebextensions/env.config
           echo "    EMAIL_PROVIDER: \"${{ secrets.EMAIL_PROVIDER }}\"" >> .ebextensions/env.config
 
+          # === Shortener Url === 
+          echo "    SHORT_IO_SECRET_KEY: \"${{ secrets.SHORT_IO_SECRET_KEY }}\"" >> .ebextensions/env.config
+
           # === Social Media APIs ===
           echo "    X_API_KEY: \"${{ secrets.X_API_KEY }}\"" >> .ebextensions/env.config
           echo "    X_API_SECRET: \"${{ secrets.X_API_SECRET }}\"" >> .ebextensions/env.config
