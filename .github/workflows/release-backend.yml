@@ -120,6 +120,7 @@ jobs:
           echo "    DRIBBBLE_CLIENT_ID: \"${{ secrets.DRIBBBLE_CLIENT_ID }}\"" >> .ebextensions/env.config
           echo "    DRIBBBLE_CLIENT_SECRET: \"${{ secrets.DRIBBBLE_CLIENT_SECRET }}\"" >> .ebextensions/env.config
           echo "    INSTAGRAM_APP_ID: \"${{ secrets.INSTAGRAM_APP_ID }}\"" >> .ebextensions/env.config
+          echo "    INSTAGRAM_APP_SECRET: \"${{ secrets.INSTAGRAM_APP_SECRET }}\"" >> .ebextensions/env.config
           echo "    SLACK_ID: \"${{ secrets.SLACK_ID }}\"" >> .ebextensions/env.config
           echo "    SLACK_SECRET: \"${{ secrets.SLACK_SECRET }}\"" >> .ebextensions/env.config
           echo "    SLACK_SIGNING_SECRET: \"${{ secrets.SLACK_SIGNING_SECRET }}\"" >> .ebextensions/env.config
