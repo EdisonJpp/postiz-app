@@ -132,7 +132,6 @@ jobs:
           echo "    MASTODON_CLIENT_ID: \"${{ secrets.MASTODON_CLIENT_ID }}\"" >> .ebextensions/env.config
           echo "    MASTODON_CLIENT_SECRET: \"${{ secrets.MASTODON_CLIENT_SECRET }}\"" >> .ebextensions/env.config
           
-
           # === Misc Settings ===
           echo "    OPENAI_API_KEY: \"${{ secrets.OPENAI_API_KEY }}\"" >> .ebextensions/env.config
 
