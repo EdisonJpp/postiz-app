@@ -29,11 +29,11 @@ import {
   SalmonWalletAdapter,
   SolflareWalletAdapter,
   TokenaryWalletAdapter,
-  TrezorWalletAdapter,
   TrustWalletAdapter,
   XDEFIWalletAdapter,
   TokenPocketWalletAdapter,
-} from '@solana/wallet-adapter-wallets';
+} from '@postiz/wallets';
+
 import {
   WalletModalProvider,
   useWalletModal,
@@ -83,7 +83,6 @@ export const ButtonCaster: FC<{ login: (code: string) => void }> = (props) => {
       new SalmonWalletAdapter(),
       new SolflareWalletAdapter(),
       new TokenaryWalletAdapter(),
-      new TrezorWalletAdapter(),
       new TrustWalletAdapter(),
       new XDEFIWalletAdapter(),
     ],
