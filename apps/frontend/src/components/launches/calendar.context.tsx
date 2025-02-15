@@ -185,11 +185,11 @@ export const CalendarWeekProvider: FC<{
     [posts, internalData]
   );
 
-  useEffect(() => {
-    if (posts) {
-      setInternalData(posts);
-    }
-  }, [posts]);
+  // useEffect(() => {
+  //   if (posts) {
+  //     setInternalData(posts);
+  //   }
+  // }, [posts]);
 
   return (
     <CalendarContext.Provider

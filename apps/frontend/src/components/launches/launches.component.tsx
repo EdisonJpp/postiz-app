@@ -186,7 +186,7 @@ export const MenuComponent: FC<
         'data-tooltip-id': 'tooltip',
         'data-tooltip-content': 'Channel disconnected, click to reconnect.',
       })}
-      key={integration.id}
+      // key={integration.id}
       className={clsx(
         'flex gap-[8px] items-center',
         integration.refreshNeeded && 'cursor-pointer'
